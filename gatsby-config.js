@@ -62,7 +62,14 @@ module.exports = {
         icon: `static/favicon.ico`,
       },
     },
-
+    {
+      resolve: 'gatsby-source-storyblok',
+      options: {
+        accessToken: 'gxR0Xs2ThrgrKodXBIdg6gtt',
+        version: 'draft',
+        // languages: ['de', 'at'] // Optional parameter. Omission will retrieve all languages by default.
+      }
+    }
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

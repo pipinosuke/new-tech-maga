@@ -1,9 +1,19 @@
+import { graphql, useStaticQuery } from "gatsby"
 import React from "react"
+import SbEditable from "storyblok-react"
+import DynamicComponent from "../components/dynamicComponent"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const AboutPage = () => {
+const AboutPage = ({data}) => {
+  let story = data.storyblokEntry
+  story.content = JSON.parse(story.content)
+
+  // const components = story.content.body.map(blok => {
+  //   return (<DynamicComponent blok={blok} key={blok._uid} />)
+  // })
+ 
   return (
     <Layout>
       <SEO title="About Blog Boost Starter" />
@@ -31,8 +41,20 @@ const AboutPage = () => {
         </div>
 
         <h3>Thanks for visiting!!</h3>
+        <h1>{story.content.title}</h1>
       </div>
     </Layout>
   )
 }
+
+export const query = graphql`
+  query AboutQuery {
+    storyblokEntry(slug: {eq: "about"}) {
+      content
+      name
+    }
+  }
+`
+
+
 export default AboutPage

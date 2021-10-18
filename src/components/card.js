@@ -1,23 +1,24 @@
 import React from "react"
 import { Link } from "gatsby"
 import Image from "gatsby-image"
+import { getFluidGatsbyImage } from 'gatsby-storyblok-image'
 
-const Card = ({ frontmatter, slug }) => {
+const Card = ({ content, slug }) => {
   return (
     <figure className="card-styles">
       <Link to={slug}>
         <Image
           className="card-image"
-          fluid={frontmatter.featuredImage.childImageSharp.fluid}
+          fluid={getFluidGatsbyImage(content.image.filename)}
         />
       </Link>
 
       <figcaption>
-        <Link to={`/${frontmatter.category.toLowerCase().replace(" ", "-")}`}>
-          <div className="card-topic">{frontmatter.category}</div>
-        </Link>
+        {/* <Link to={`/${frontmatter.category.toLowerCase().replace(" ", "-")}`}>
+          <div className="card-topic">{content.category}</div>
+        </Link> */}
         <Link to={slug}>
-          <h3>{frontmatter.title}</h3>
+          <h3>{content.title}</h3>
         </Link>
       </figcaption>
     </figure>

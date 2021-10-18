@@ -1,4 +1,4 @@
-import { graphql, useStaticQuery } from "gatsby"
+import { graphql } from "gatsby"
 import React from "react"
 import SbEditable from "storyblok-react"
 import DynamicComponent from "../components/dynamicComponent"

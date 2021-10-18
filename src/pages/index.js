@@ -9,7 +9,7 @@ import CardSmall from "../components/cardSmall"
 import Featured from "../components/featured"
 import Search from "../components/search"
 
-const IndexPage = props => {
+const IndexPage = (props) => {
   const data = useStaticQuery(graphql`
     {
       tagsGroup: allMarkdownRemark(limit: 100) {
@@ -17,61 +17,49 @@ const IndexPage = props => {
           fieldValue
         }
       }
-      allMarkdownRemark {
+      allStoryblokEntry(filter: {full_slug: {regex: "/^article.*/"}}) {
         edges {
           node {
-            id
-            fields {
+              id
               slug
-            }
-            frontmatter {
-              date(formatString: "MMMM DD, YYYY")
-              title
-              description
-              category
-              tags
-              featuredImage {
-                childImageSharp {
-                  fluid(maxWidth: 600) {
-                    ...GatsbyImageSharpFluid
-                  }
-                }
-              }
+              full_slug
+              content
             }
           }
         }
       }
-    }
   `)
   const [queryType, query] = props.location.search.split("=")
 
   if (queryType === "?s" && query.length > 0) {
     return (
       <Layout>
-        <Search
+        {/* <Search
           markdown={data.allMarkdownRemark}
           tagsGroup={data.tagsGroup}
           query={query}
-        />
+        /> */}
       </Layout>
     )
   } else {
     return (
       <Layout>
         <SEO title="Home" slug="/" />
-        <Featured markdown={data.allMarkdownRemark} />
+        <Featured markdown={data.allStoryblokEntry} />
+        {/* {JSON.parse(data.allStoryblokEntry.edges[0].node.content).title} */}
+        {/* {console.log(JSON.parse(data.allStoryblokEntry.edges[0]))} */}
         <div className="flex-layout">
           <div className="cards">
             <h2 id="articles-title">Articles</h2>
-            {data.allMarkdownRemark.edges.map(({ node }, index) => {
+            {data.allStoryblokEntry.edges.map(({ node }, index) => {
               if (index < 3) {
                 return null
               } else {
                 return (
                   <Card
                     key={node.id}
-                    slug={node.fields.slug}
-                    frontmatter={node.frontmatter}
+                    slug={node.slug}
+                    content={JSON.parse(node.content)}
                   />
                 )
               }
@@ -94,13 +82,13 @@ const IndexPage = props => {
             </div>
             <h2 className="sidebar-header">Popular Articles</h2>
             <div>
-              {data.allMarkdownRemark.edges.map(({ node }, index) => {
+              {data.allStoryblokEntry.edges.map(({ node }, index) => {
                 if (index > 2 && index < 5) {
                   return (
                     <CardSmall
                       key={node.id}
-                      slug={node.fields.slug}
-                      frontmatter={node.frontmatter}
+                      slug={node.slug}
+                      content={JSON.parse(node.content)}
                     />
                   )
                 } else return null

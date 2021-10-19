@@ -67,6 +67,7 @@ module.exports = {
       options: {
         accessToken: 'gxR0Xs2ThrgrKodXBIdg6gtt',
         version: 'draft',
+        resolveRelations: ['Post.category'],
         // languages: ['de', 'at'] // Optional parameter. Omission will retrieve all languages by default.
       }
     }

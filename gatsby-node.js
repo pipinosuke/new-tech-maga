@@ -26,19 +26,14 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const result = await graphql(`
     {
-      postsRemark: allMarkdownRemark(
-        sort: { fields: [frontmatter___date], order: DESC }
+      postsRemark: allStoryblokEntry(
+        filter: {full_slug: {regex: "/^article.*/"}}
+        sort: {order: ASC, fields: created_at}
         limit: 1000
       ) {
         edges {
           node {
-            fields {
-              slug
-            }
-            frontmatter {
-              title
-              category
-            }
+            slug
           }
         }
       }
@@ -66,7 +61,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   posts.forEach((post, index) => {
     const previous = index === posts.length - 1 ? null : posts[index + 1].node
     const next = index === 0 ? null : posts[index - 1].node
-    const slug = post.node.fields.slug
+    const slug = post.node.slug
 
     createPage({
       path: slug,
@@ -74,7 +69,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       context: {
         slug: slug,
         previous,
-        topic: post.node.frontmatter.category,
+        topic: post.node.category ?? "topic1",
         next,
       },
     })

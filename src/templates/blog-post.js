@@ -4,36 +4,39 @@ import Layout from "../components/layout"
 import Image from "gatsby-image"
 import SEO from "../components/seo"
 import Card from "../components/card"
+import { getFluidGatsbyImage } from "gatsby-storyblok-image"
+import Markdown from "react-markdown"
 
 class ArticleTemplate extends Component {
   render() {
     const { data, pageContext } = this.props
     const { topic } = pageContext
-    const post = data.markdownRemark
+    const post = data.storyblokEntry
+    const content = JSON.parse(post.content)
 
-    const similarPosts = data.allMarkdownRemark.edges
-      .filter(item => {
-        return (
-          item.node.frontmatter.category === topic &&
-          item.node.frontmatter.title !== post.frontmatter.title
-        )
-      })
-      .filter((item, index) => {
-        return index < 2
-      })
+    // const similarPosts = data.allStoryblokEntry.edges
+    //   .filter(item => {
+    //     return (
+    //       item.node.category === topic &&
+    //       item.node.title !== post.title
+    //     )
+    //   })
+    //   .filter((item, index) => {
+    //     return index < 2
+    //   })
 
     return (
       <Layout pageType="Post">
         <SEO
-          title={post.frontmatter.title}
-          description={post.frontmatter.description}
+          title={content.title}
+          description={content.description}
         />
         <div id="article">
           <header>
-            <h1 className="article-title">{post.frontmatter.title}</h1>
-            <p className="article-date">{post.frontmatter.date}</p>
+            <h1 className="article-title">{content.title}</h1>
+            <p className="article-date">{post.published_at}</p>
             <div className="article-tags">
-              {post.frontmatter.tags.map(tag => (
+              {/* {content.tags.map(tag => (
                 <Link
                   className="tag"
                   key={tag}
@@ -46,30 +49,32 @@ class ArticleTemplate extends Component {
                 >
                   {tag}
                 </Link>
-              ))}
+              ))} */}
             </div>
             <Image
-              fluid={post.frontmatter.featuredImage.childImageSharp.fluid}
+              fluid={getFluidGatsbyImage(content.image.filename)}
               className="article-image"
             ></Image>
           </header>
-          <div
-            className="article-markdown"
-            dangerouslySetInnerHTML={{ __html: post.html }}
+
+          <Markdown
+              className="article-markdown"
+              children={content.body}
           />
 
+
           <div>
-            {similarPosts.length > 0 && (
+            {/* {similarPosts.length > 0 && (
               <h3 id="similar-posts-header">
                 Other {this.props.pageContext.topic} Tutorials
               </h3>
-            )}
+            )} */}
 
-            <section>
+            {/* <section>
               {similarPosts.map(({ node }) => {
                 return (
                   <Card
-                    key={node.fields.slug}
+                    key={node.slug}
                     title={node.frontmatter.title}
                     slug={node.fields.slug}
                     date={node.frontmatter.date}
@@ -79,7 +84,7 @@ class ArticleTemplate extends Component {
                   />
                 )
               })}
-            </section>
+            </section> */}
           </div>
         </div>
       </Layout>
@@ -95,45 +100,17 @@ export const pageQuery = graphql`
         title
       }
     }
-    markdownRemark(fields: { slug: { eq: $slug } }) {
+    storyblokEntry(slug: {eq: $slug}) {
       id
-      excerpt(pruneLength: 160)
-      html
-      frontmatter {
-        title
-        date(formatString: "MMMM DD, YYYY")
-        dateModified(formatString: "MMMM DD, YYYY")
-        description
-        tags
-        category
-        featuredImage {
-          childImageSharp {
-            fluid(maxWidth: 800) {
-              ...GatsbyImageSharpFluid
-            }
-          }
-        }
-      }
+      published_at(formatString: "MMMM DD, YYYY")
+      content
     }
-    allMarkdownRemark {
+    allStoryblokEntry(filter: {full_slug: {regex: "/^article.*/"}}) {
       edges {
         node {
           id
-          fields {
-            slug
-          }
-          frontmatter {
-            title
-            tags
-            category
-            featuredImage {
-              childImageSharp {
-                fluid(maxWidth: 400) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
-          }
+          slug
+          content
         }
       }
     }

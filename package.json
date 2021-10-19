@@ -30,6 +30,7 @@
     "react-dom": "^16.12.0",
     "react-helmet": "^6.0.0",
     "react-icons": "^3.10.0",
+    "react-markdown": "^7.0.1",
     "storyblok-js-client": "^4.1.5",
     "storyblok-react": "^0.1.2"
   },

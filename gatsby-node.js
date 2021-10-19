@@ -69,7 +69,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       context: {
         slug: slug,
         previous,
-        topic: post.node.category ?? "topic1",
+        topic: post.node.category ? post.node.category :"topic1",
         next,
       },
     })

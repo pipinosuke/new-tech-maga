@@ -1,7 +1,7 @@
 import { graphql } from "gatsby"
 import React from "react"
 import SbEditable from "storyblok-react"
-import DynamicComponent from "../components/dynamicComponent"
+// import DynamicComponent from "../components/dynamicComponent"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"

@@ -9,7 +9,7 @@ import { IoIosSearch } from "react-icons/io"
 const Header = ({ siteTitle, menuOpen, setMenuOpen }) => {
   const data = useStaticQuery(graphql`
     {
-      allTopicsJson {
+      allStoryblokEntry(filter: {full_slug: {regex: "/^topics.*/"}}) {
         edges {
           node {
             name
@@ -44,13 +44,13 @@ const Header = ({ siteTitle, menuOpen, setMenuOpen }) => {
 
         <nav id="nav">
           <ul>
-            {data.allTopicsJson.edges.map(({ node }) => (
+            {data.allStoryblokEntry.edges.map(({ node }) => (
               <li key={node.slug}>
                 <Link to={`/${node.slug}`}>{node.name}</Link>
               </li>
             ))}
             <li>
-              <Link to="/about">About</Link>
+              <Link to="/about">サイト情報</Link>
             </li>
           </ul>
           <div id="search-box">

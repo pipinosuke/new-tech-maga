@@ -27,8 +27,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const result = await graphql(`
     {
       postsRemark: allStoryblokEntry(
-        filter: {full_slug: {regex: "/^article.*/"}}
-        sort: {order: ASC, fields: created_at}
+        filter: {field_component: {eq: "Post"}}
+        sort: {order: ASC, fields: published_at}
         limit: 1000
       ) {
         edges {
@@ -37,10 +37,16 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           }
         }
       }
-      topicsGroup: allMarkdownRemark(limit: 2000) {
-        group(field: frontmatter___category) {
-          fieldValue
-        }
+      topicsGroup: allStoryblokEntry(
+        filter: {field_component: {eq: "category"}}
+        limit: 2000
+        ) {
+          edges {
+            node {
+              name
+              slug   
+            }
+          }
       }
       tagsGroup: allMarkdownRemark(limit: 2000) {
         group(field: frontmatter___tags) {
@@ -55,7 +61,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   }
 
   const posts = result.data.postsRemark.edges
-  const topics = result.data.topicsGroup.group
+  const topics = result.data.topicsGroup.edges
   const tags = result.data.tagsGroup.group
 
   posts.forEach((post, index) => {
@@ -69,7 +75,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       context: {
         slug: slug,
         previous,
-        topic: post.node.category ? post.node.category :"topic1",
+        topic: post.node.category ? post.node.category : "topic1",
         next,
       },
     })
@@ -105,10 +111,10 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // Create Topics Pages
   topics.forEach(topic => {
     createPage({
-      path: `/${_.kebabCase(topic.fieldValue.toLowerCase())}/`,
+      path: `/${_.kebabCase(topic.node.slug.toLowerCase())}/`,
       component: topicPage,
       context: {
-        topic: topic.fieldValue,
+        topic: topic.node.slug,
       },
     })
   })

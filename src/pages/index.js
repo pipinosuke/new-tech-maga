@@ -17,13 +17,14 @@ const IndexPage = (props) => {
           fieldValue
         }
       }
-      allStoryblokEntry(filter: {full_slug: {regex: "/^article.*/"}}) {
+      allStoryblokEntry(filter: {field_component: {eq: "Post"}}) {
         edges {
           node {
               id
               slug
               full_slug
               content
+              published_at
             }
           }
         }

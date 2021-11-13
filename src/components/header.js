@@ -9,7 +9,7 @@ import { IoIosSearch } from "react-icons/io"
 const Header = ({ siteTitle, menuOpen, setMenuOpen }) => {
   const data = useStaticQuery(graphql`
     {
-      allStoryblokEntry(filter: {full_slug: {regex: "/^topics.*/"}}) {
+      allStoryblokEntry(filter: {field_component: {eq: "category"}}) {
         edges {
           node {
             name

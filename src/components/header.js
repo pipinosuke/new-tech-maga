@@ -50,7 +50,7 @@ const Header = ({ siteTitle, menuOpen, setMenuOpen }) => {
               </li>
             ))}
             <li>
-              <Link to="/about">サイト情報</Link>
+              <Link to="/about">インフォーメーション</Link>
             </li>
           </ul>
           <div id="search-box">

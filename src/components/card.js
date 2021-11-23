@@ -14,9 +14,9 @@ const Card = ({ content, slug }) => {
       </Link>
 
       <figcaption>
-        {/* <Link to={`/${frontmatter.category.toLowerCase().replace(" ", "-")}`}>
-          <div className="card-topic">{content.category}</div>
-        </Link> */}
+        <Link to={`/${content.category.slug.toLowerCase().replace(" ", "-")}`}>
+          <div className="card-topic">{content.category.name}</div>
+        </Link>
         <Link to={slug}>
           <h3>{content.title}</h3>
         </Link>

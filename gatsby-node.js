@@ -34,6 +34,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         edges {
           node {
             slug
+            content
           }
         }
       }
@@ -68,6 +69,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     const previous = index === posts.length - 1 ? null : posts[index + 1].node
     const next = index === 0 ? null : posts[index - 1].node
     const slug = post.node.slug
+    console.log(JSON.parse(post.node.content).category.name)
 
     createPage({
       path: slug,
@@ -75,7 +77,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       context: {
         slug: slug,
         previous,
-        topic: post.node.category ? post.node.category : "topic1",
+        topic: JSON.parse(post.node.content).category.name,
         next,
       },
     })

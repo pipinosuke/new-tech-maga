@@ -14,16 +14,17 @@ class ArticleTemplate extends Component {
     const post = data.storyblokEntry
     const content = JSON.parse(post.content)
 
-    // const similarPosts = data.allStoryblokEntry.edges
-    //   .filter(item => {
-    //     return (
-    //       item.node.category === topic &&
-    //       item.node.title !== post.title
-    //     )
-    //   })
-    //   .filter((item, index) => {
-    //     return index < 2
-    //   })
+    const similarPosts = data.allStoryblokEntry.edges
+      .filter(item => {
+        const postInfo = JSON.parse(item.node.content)
+        return (
+          postInfo.category.name === topic &&
+          postInfo.title !== content.title
+        )
+      })
+      .filter((item, index) => {
+        return index < 2
+      })
 
     return (
       <Layout pageType="Post">
@@ -34,9 +35,9 @@ class ArticleTemplate extends Component {
         <div id="article">
           <header>
             <h1 className="article-title">{content.title}</h1>
-            <p className="article-date">{post.published_at}</p>
+            <p className="article-date">{post.published_at} 記事を書いた人: {content.author.name}</p>
             <div className="article-tags">
-              {/* {content.tags.map(tag => (
+              {/* {content.topics.map(tag => (
                 <Link
                   className="tag"
                   key={tag}
@@ -50,6 +51,18 @@ class ArticleTemplate extends Component {
                   {tag}
                 </Link>
               ))} */}
+              <Link
+                  className="tag"
+                  key={content.category.id}
+                  to={`/${content.category.slug
+                    .split(" ")
+                    .join("-")
+                    .split("/")
+                    .join("-")
+                    .toLowerCase()}`}
+                >
+                  {content.category.name}
+                </Link>
             </div>
             <Image
               fluid={getFluidGatsbyImage(content.image.filename)}
@@ -64,27 +77,23 @@ class ArticleTemplate extends Component {
 
 
           <div>
-            {/* {similarPosts.length > 0 && (
+            {similarPosts.length > 0 && (
               <h3 id="similar-posts-header">
-                Other {this.props.pageContext.topic} Tutorials
+                「{topic}」についての関連記事
               </h3>
-            )} */}
+            )}
 
-            {/* <section>
+            <section>
               {similarPosts.map(({ node }) => {
                 return (
                   <Card
-                    key={node.slug}
-                    title={node.frontmatter.title}
-                    slug={node.fields.slug}
-                    date={node.frontmatter.date}
-                    description={node.frontmatter.description}
-                    excerpt={node.excerpt}
-                    frontmatter={node.frontmatter}
+                    key={node.id}
+                    slug={node.slug}
+                    content={JSON.parse(node.content)}
                   />
                 )
               })}
-            </section> */}
+            </section>
           </div>
         </div>
       </Layout>
@@ -105,7 +114,7 @@ export const pageQuery = graphql`
       published_at(formatString: "MMMM DD, YYYY")
       content
     }
-    allStoryblokEntry(filter: {full_slug: {regex: "/^article.*/"}}) {
+    allStoryblokEntry(filter: {field_component: {eq: "Post"}}) {
       edges {
         node {
           id

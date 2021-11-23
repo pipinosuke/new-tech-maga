@@ -47,8 +47,6 @@ const IndexPage = (props) => {
       <Layout>
         <SEO title="Home" slug="/" />
         <Featured markdown={data.allStoryblokEntry} />
-        {/* {JSON.parse(data.allStoryblokEntry.edges[0].node.content).title} */}
-        {/* {console.log(JSON.parse(data.allStoryblokEntry.edges[0]))} */}
         <div className="flex-layout">
           <div className="cards">
             <h2 id="articles-title">Articles</h2>
@@ -66,6 +64,7 @@ const IndexPage = (props) => {
               }
             })}
           </div>
+          {/* 以下Component化したい */}
           <div className="sidebar">
             <h2 className="sidebar-header">Mailing List</h2>
             <div className="sidebar-emails">

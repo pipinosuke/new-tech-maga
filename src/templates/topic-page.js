@@ -5,6 +5,7 @@ import Image from "gatsby-image"
 import Card from "../components/card"
 import CardSmall from "../components/cardSmall"
 import Layout from "../components/layout"
+import { getFluidGatsbyImage } from "gatsby-storyblok-image"
 
 const TopicPageTemplate = ({ pageContext }) => {
   const data = useStaticQuery(graphql`
@@ -14,41 +15,13 @@ const TopicPageTemplate = ({ pageContext }) => {
           title
         }
       }
-      allMarkdownRemark {
+      allStoryblokEntry(filter: {field_component: {eq: "Post"}}) {
         edges {
           node {
-            fields {
+              id
               slug
-            }
-            frontmatter {
-              date(formatString: "MMMM DD, YYYY")
-              title
-              description
-              tags
-              category
-              featuredImage {
-                childImageSharp {
-                  fluid(maxWidth: 400) {
-                    ...GatsbyImageSharpFluid
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      allTopicsJson {
-        edges {
-          node {
-            name
-            slug
-            image {
-              childImageSharp {
-                fluid(maxWidth: 240, maxHeight: 240) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
+              full_slug
+              content
           }
         }
       }
@@ -56,23 +29,25 @@ const TopicPageTemplate = ({ pageContext }) => {
   `)
 
   const { topic } = pageContext
-  const { edges } = data.allMarkdownRemark
+  const { edges } = data.allStoryblokEntry
 
   const edgesWithTopic = edges.filter(({ node }) => {
-    return node.frontmatter.tags.includes(topic)
+    return JSON.parse(node.content).category.slug === topic
   })
 
-  const topicInfo = data.allTopicsJson.edges.filter(({ node }) => {
-    return node.slug === topic.toLowerCase().replace(" ", "-")
+  const topicData = data.allStoryblokEntry.edges.filter(({ node }) => {
+    return JSON.parse(node.content).category.slug === topic.toLowerCase().replace(" ", "-")
   })[0].node
+
+  const topicInfo = JSON.parse(topicData.content).category
 
   return (
     <Layout pageType="Topic">
       <div className="topic-page-header">
-        <h1>{topic}</h1>
+        <h1>{topicInfo.name}</h1>
         <Image
           className="topic-page-image"
-          fluid={topicInfo.image.childImageSharp.fluid}
+          fluid={getFluidGatsbyImage(topicInfo.content.icon.filename)}
           alt={topicInfo.name}
         />{" "}
       </div>
@@ -82,13 +57,14 @@ const TopicPageTemplate = ({ pageContext }) => {
           {edgesWithTopic.map(({ node }, index) => {
             return (
               <Card
-                key={node.fields.slug}
-                slug={node.fields.slug}
-                frontmatter={node.frontmatter}
+                key={node.slug}
+                slug={"/"+ node.slug}
+                content={JSON.parse(node.content)}
               />
             )
           })}
         </div>
+        {/* 以下Component化したい */}
         <div className="sidebar">
           <h2 className="sidebar-header">Mailing List</h2>
           <div className="sidebar-emails">
@@ -107,7 +83,7 @@ const TopicPageTemplate = ({ pageContext }) => {
           </div>
           <h2 className="sidebar-header">Popular Articles</h2>
           <div className="sidebar-popular">
-            {data.allMarkdownRemark.edges.map(({ node }, index) => {
+            {/* {data.allMarkdownRemark.edges.map(({ node }, index) => {
               if (index > 2 && index < 5) {
                 return (
                   <CardSmall
@@ -117,7 +93,7 @@ const TopicPageTemplate = ({ pageContext }) => {
                   />
                 )
               } else return null
-            })}
+            })} */}
           </div>
         </div>
       </div>

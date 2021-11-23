@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `テクマガ(仮)`,
+    title: `Title Pending`,
     description: `A Gatsby Netlify CMS powered Blog Starter to boost your development.`,
     author: `@boostcode`,
   },
@@ -66,7 +66,7 @@ module.exports = {
       options: {
         accessToken: 'gxR0Xs2ThrgrKodXBIdg6gtt',
         version: 'draft',
-        resolveRelations: ['Post.category'],
+        resolveRelations: ["Post.category","Post.author"],
         // languages: ['de', 'at'] // Optional parameter. Omission will retrieve all languages by default.
       }
     }

@@ -25,7 +25,7 @@ const Featured = ({ markdown }) => {
                   />
                   <figcaption>
                     <h2>{content.title}</h2>
-                    {/* <span>{node.category}</span> */}
+                    <span>{content.category.name}</span>
                   </figcaption>
                 </Link>
               </figure>
@@ -43,7 +43,7 @@ const Featured = ({ markdown }) => {
                   />
                   <figcaption>
                     <h2>{content.title}</h2>
-                    {/* <span>{node.frontmatter.category}</span> */}
+                    <span>{content.category.name}</span>
                   </figcaption>
                 </Link>
               </figure>

@@ -8,7 +8,8 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa"
 
 function ArchivePageTemplate({ data, pageContext }) {
   const { numPages, currentPage } = pageContext
-  const posts = data.allMarkdownRemark.edges
+//  const posts = data.allMarkdownRemark.edges
+  const posts = data.allStoryblokEntry.edges
 
   return (
     <Layout pageType="Archive">
@@ -20,8 +21,8 @@ function ArchivePageTemplate({ data, pageContext }) {
             return (
               <Card
                 key={node.id}
-                slug={node.fields.slug}
-                frontmatter={node.frontmatter}
+                slug={node.slug}
+                content={JSON.parse(node.content)}
               />
             )
           })}
@@ -86,13 +87,13 @@ function ArchivePageTemplate({ data, pageContext }) {
           </div>
           <h2 className="sidebar-header">Popular Articles</h2>
           <div className="sidebar-popular">
-            {data.allMarkdownRemark.edges.map(({ node }, index) => {
+            {posts.map(({ node }, index) => {
               if (index > 2 && index < 5) {
                 return (
                   <CardSmall
                     key={node.id}
-                    slug={node.fields.slug}
-                    frontmatter={node.frontmatter}
+                    slug={node.slug}
+                    content={node.content}
                   />
                 )
               } else return null
@@ -112,33 +113,21 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: DESC }
+    allStoryblokEntry(
       limit: $limit
       skip: $skip
-    ) {
-      edges {
-        node {
-          excerpt
-          fields {
+      filter: {field_component: {eq: "Post"}}
+      sort: {order: DESC, fields: published_at}
+      ) {
+        edges {
+          node {
+            id
             slug
-          }
-          frontmatter {
-            date(formatString: "MMMM DD, YYYY")
-            title
-            description
-            tags
-            category
-            featuredImage {
-              childImageSharp {
-                fluid(maxWidth: 400) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
+            full_slug
+            content
+            published_at
           }
         }
       }
-    }
   }
 `

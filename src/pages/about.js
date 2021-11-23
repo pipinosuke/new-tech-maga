@@ -16,7 +16,7 @@ const AboutPage = ({data}) => {
  
   return (
     <Layout>
-      <SEO title="About Blog Boost Starter" />
+      <SEO title={story.content.title} />
       <div id="about">
         <h2>About Blog Boost Starter</h2>
         <p>
@@ -41,7 +41,7 @@ const AboutPage = ({data}) => {
         </div>
 
         <h3>Thanks for visiting!!</h3>
-        <h1>{story.content.title}</h1>
+        <h1></h1>
       </div>
     </Layout>
   )

@@ -6,6 +6,7 @@ import Card from "../components/card"
 import CardSmall from "../components/cardSmall"
 import Layout from "../components/layout"
 import { getFluidGatsbyImage } from "gatsby-storyblok-image"
+import Sidebar from "../components/sidebar"
 
 const TopicPageTemplate = ({ pageContext }) => {
   const data = useStaticQuery(graphql`
@@ -64,38 +65,7 @@ const TopicPageTemplate = ({ pageContext }) => {
             )
           })}
         </div>
-        {/* 以下Component化したい */}
-        <div className="sidebar">
-          <h2 className="sidebar-header">Mailing List</h2>
-          <div className="sidebar-emails">
-            <h2>Mailing list here</h2>
-            <p>Subscribe to my list for lots of great reasons</p>
-            <form>
-              <input type="text" id="email" aria-label="email" />
-              <input
-                type="submit"
-                value="Subscribe"
-                aria-label="subscribe"
-              />{" "}
-            </form>
-
-            <span>Weekly updates, unsubscribe at any time</span>
-          </div>
-          <h2 className="sidebar-header">Popular Articles</h2>
-          <div className="sidebar-popular">
-            {/* {data.allMarkdownRemark.edges.map(({ node }, index) => {
-              if (index > 2 && index < 5) {
-                return (
-                  <CardSmall
-                    key={node.fields.slug}
-                    slug={node.fields.slug}
-                    frontmatter={node.frontmatter}
-                  />
-                )
-              } else return null
-            })} */}
-          </div>
-        </div>
+        <Sidebar poplularPosts={data.allStoryblokEntry.edges}/>
       </div>
     </Layout>
   )

@@ -11,7 +11,8 @@ const Footer = () => {
     <footer id="footer">
       <div className="container">
         <div className="footer-social">
-          <div className="footer-social-text">Follow Us</div>
+          <div className="footer-social-text">Social Links</div>
+          {/* Storyblokで管理したい */}
           <div className="footer-social-icons">
             <a
               target="_blank"
@@ -51,7 +52,7 @@ const Footer = () => {
             </a>
           </div>
         </div>
-        <div>© {new Date().getFullYear()} Blog Boost Starter</div>
+        <div>© {new Date().getFullYear()} どっかのエンジニア</div>
       </div>
     </footer>
   )

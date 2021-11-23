@@ -8,6 +8,7 @@ import Card from "../components/card"
 import CardSmall from "../components/cardSmall"
 import Featured from "../components/featured"
 import Search from "../components/search"
+import Sidebar from "../components/sidebar"
 
 const IndexPage = (props) => {
   const data = useStaticQuery(graphql`
@@ -64,37 +65,7 @@ const IndexPage = (props) => {
               }
             })}
           </div>
-          {/* 以下Component化したい */}
-          <div className="sidebar">
-            <h2 className="sidebar-header">Mailing List</h2>
-            <div className="sidebar-emails">
-              <h2>Mailing list here</h2>
-              <p>Subscribe to my list for lots of great reasons</p>
-              <form>
-                <input type="text" id="email" aria-label="email" />
-                <input
-                  type="submit"
-                  value="Subscribe"
-                  aria-label="subscribe"
-                />{" "}
-              </form>
-              <span>Weekly updates, unsubscribe at any time</span>
-            </div>
-            <h2 className="sidebar-header">Popular Articles</h2>
-            <div>
-              {data.allStoryblokEntry.edges.map(({ node }, index) => {
-                if (index > 2 && index < 5) {
-                  return (
-                    <CardSmall
-                      key={node.id}
-                      slug={node.slug}
-                      content={JSON.parse(node.content)}
-                    />
-                  )
-                } else return null
-              })}
-            </div>
-          </div>
+          <Sidebar poplularPosts={data.allStoryblokEntry.edges}/>
         </div>
         <Link to="/archive/2" id="archive-link">
           More Articles

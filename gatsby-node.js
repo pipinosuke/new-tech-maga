@@ -69,7 +69,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     const previous = index === posts.length - 1 ? null : posts[index + 1].node
     const next = index === 0 ? null : posts[index - 1].node
     const slug = post.node.slug
-    console.log(JSON.parse(post.node.content).category.name)
 
     createPage({
       path: slug,

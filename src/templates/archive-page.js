@@ -93,7 +93,7 @@ function ArchivePageTemplate({ data, pageContext }) {
                   <CardSmall
                     key={node.id}
                     slug={node.slug}
-                    content={node.content}
+                    content={JSON.parse(node.content)}
                   />
                 )
               } else return null

@@ -22,7 +22,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
   const blogPost = path.resolve(`./src/templates/blog-post.js`)
   const topicPage = path.resolve("./src/templates/topic-page.js")
-  const tagPage = path.resolve("./src/templates/tag-page.js")
+  // const tagPage = path.resolve("./src/templates/tag-page.js")
 
   const result = await graphql(`
     {
@@ -99,15 +99,15 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   })
 
   // Create Tag Pages
-  tags.forEach(tag => {
-    createPage({
-      path: `/${_.kebabCase(tag.fieldValue.toLowerCase())}/`,
-      component: tagPage,
-      context: {
-        tag: tag.fieldValue,
-      },
-    })
-  })
+  // tags.forEach(tag => {
+  //   createPage({
+  //     path: `/${_.kebabCase(tag.fieldValue.toLowerCase())}/`,
+  //     component: tagPage,
+  //     context: {
+  //       tag: tag.fieldValue,
+  //     },
+  //   })
+  // })
 
   // Create Topics Pages
   topics.forEach(topic => {

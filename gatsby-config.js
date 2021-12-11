@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Title Pending`,
+    title: `ペンギンの広場`,
     description: `A Gatsby Netlify CMS powered Blog Starter to boost your development.`,
     author: `@boostcode`,
   },

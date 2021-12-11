@@ -68,7 +68,7 @@ const IndexPage = (props) => {
           <Sidebar poplularPosts={data.allStoryblokEntry.edges}/>
         </div>
         <Link to="/archive/2" id="archive-link">
-          More Articles
+          次の記事へ
           <FaAngleDoubleRight className="icon-right" />
         </Link>{" "}
         <br />

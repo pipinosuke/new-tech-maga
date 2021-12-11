@@ -556,13 +556,24 @@ footer {
     height: auto;
   }
 }
-.article-markdown h2,
+.article-markdown h2 {
+  margin-bottom: 8px;
+}
 .article-markdown h3 {
   margin-top: 40px;
 }
 .article-markdown p {
   margin-bottom: 30px;
 }
+.article-markdown img {
+  width: 80%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
 #similar-posts-header {
   margin-bottom: 25px;
 }

@@ -1,6 +1,10 @@
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`
+})
+
 module.exports = {
   siteMetadata: {
-    title: `ペンギンの広場`,
+    title: `ペンギンのひろば`,
     description: `A Gatsby Netlify CMS powered Blog Starter to boost your development.`,
     author: `@boostcode`,
   },
@@ -57,8 +61,8 @@ module.exports = {
     {
       resolve: 'gatsby-source-storyblok',
       options: {
-        accessToken: 'gxR0Xs2ThrgrKodXBIdg6gtt',
-        version: 'draft',
+        accessToken: process.env.ACCESS_TOKEN,
+        version: process.env.NODE_ENV == "production" ? "published" : "draft",
         resolveRelations: ["Post.category","Post.author"],
         // languages: ['de', 'at'] // Optional parameter. Omission will retrieve all languages by default.
       }
